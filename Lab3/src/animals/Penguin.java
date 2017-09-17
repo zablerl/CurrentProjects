@@ -6,7 +6,7 @@ package animals;
  * @author Benjamin Rood
  * Copyright (C) 2017 Canisius College of Buffalo
  */
-public interface Penguin extends Animal
+public interface Penguin
 {
     /** Makes the penguin waddle. */
     public void waddle();

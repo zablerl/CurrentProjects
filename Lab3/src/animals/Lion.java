@@ -6,7 +6,7 @@ package animals;
  * @author Benjamin Rood
  * Copyright (C) 2017 Canisius College of Buffalo
  */
-public interface Lion extends Animal
+public interface Lion
 {
     /** Makes the lion roar. */
     public void roar();

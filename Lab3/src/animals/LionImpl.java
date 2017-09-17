@@ -8,7 +8,7 @@ package animals;
  * Lab: CSC 213
  */
 
-public class LionImpl implements Lion
+public class LionImpl implements Lion, Animal
 {
 
 	@Override

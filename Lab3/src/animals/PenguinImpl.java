@@ -8,7 +8,7 @@ package animals;
  * Lab: CSC 213
  */
 
-public class PenguinImpl implements Penguin
+public class PenguinImpl implements Penguin, Animal
 {
 	@Override
 	public void eat() {
