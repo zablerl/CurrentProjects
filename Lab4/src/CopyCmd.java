@@ -1,3 +1,11 @@
+/*
+ * Author: Lindsay Zabler
+ * Class: CSC 213/L
+ * Purpose: Lab 4
+ * This is a class that incorporates the File class, I/O Stream classes, and Buffered I/O Stream classes
+ * for the purpose of reading bytes of a file and copying them into the desired file in the desired destination
+ */
+
 import java.io.*;
 
 public class CopyCmd
@@ -15,29 +23,25 @@ public class CopyCmd
 	
 	public boolean validateInputFile()
 	{
-		if (inputFile.isDirectory())
+		if (inputFile.exists())
 		{
-			return false;
-		}
-		else
-		{
-			return true;
+			if (inputFile.isDirectory() == false)
+			{
+				return true;
+			}
 		}
 		
+		return false;
 	}
 	
 	public boolean validateOutputFile()
 	{
-		if (outputFile.isDirectory())
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		if (outputFile.isDirectory() == false)
+			{
+				return true;
+			}
+		return false;
 	}
-	
 	public void execute() throws IOException
 	{
 		FileInputStream fisIn = new FileInputStream (inputFile);
@@ -54,7 +58,7 @@ public class CopyCmd
 			while (remains > 0)
 			{
 				byte[] bytesToBeWritten;
-				int num;
+				
 				
 				if (remains >= bufferSize)
 				{
@@ -65,11 +69,13 @@ public class CopyCmd
 					bytesToBeWritten = new byte[(int)remains];
 				}
 				
-				num = bisIn.read(bytesToBeWritten);
+				numRead = bisIn.read(bytesToBeWritten);
 				bosOut.write(bytesToBeWritten, 0, bytesToBeWritten.length);
 				
-				remains -= num;
+				remains -= numRead;
 			}
+			
+			bosOut.flush();
 		}
 			finally
 			{
