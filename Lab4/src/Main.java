@@ -1,3 +1,13 @@
+/*
+ * Author: Lindsay Zabler
+ * Class: CSC 213/L
+ * Purpose: Lab 4
+ * This is the Main class of the program which creates and used objects from the
+ * SearchCmd class and the CopyCmd class to practice working with input and output
+ * files. This program also practices reading data from a file in both binary and text
+ * and also allows the user to check and see if a term is located within the desired file.
+ */
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -19,8 +29,6 @@ public class Main
 		
 		CopyCmd copy = null;
 		SearchCmd searchTerm = null;
-		
-		
 		
 		while(true)
 		{
@@ -102,6 +110,12 @@ public class Main
 				System.out.print(">");
 				String search = term.nextLine();
 				
+				if (search == null || search.isEmpty())
+				{
+					System.out.println("Search term cannot be empty or null");
+					continue;
+				}
+				
 				try
 				{
 					File inputTxt = new File(in1);
@@ -136,6 +150,7 @@ public class Main
 			
 			else if (in.equals("exit"))
 			{
+				System.out.println("Program terminated");
 				System.exit(0);
 			}
 			

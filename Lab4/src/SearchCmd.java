@@ -2,8 +2,9 @@
  * Author: Lindsay Zabler
  * Class: CSC 213/L
  * Purpose: Lab 4
- * This is a class that incorporates the File class, I/O Stream classes, and Buffered I/O Stream classes
- * for the purpose of reading bytes of a file and copying them into the desired file in the desired destination
+ * This is a class that incorporates the File class, the Reader class and the Buffered Reader class
+ * for the purpose of reading a file through its text and seeing if the inputed term to search for
+ * is located within the file. If term is found, execute() returns true, false otherwise
  */
 
 import java.io.*;
