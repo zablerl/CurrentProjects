@@ -71,22 +71,68 @@ public class CSList<E> implements ICSList<E>
 			newNode.setNext(null);
 			newNode.setObject(e);
 			tail = newNode;
+			return true;
+		}
+		else if (head.getNext() != null)
+		{
+			run = head;
+			while (run.getNext() != null)
+			{
+				run = run.getNext();
+			}
+			
+			newNode = run.getNext();
+			newNode.setPrev(run);
+			newNode.setPrev(null);
+			newNode.setObject(e);
+			tail = newNode;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	@Override
+	public boolean remove(E o) 
+	{
+		// TODO Auto-generated method stub
+		if (head.getObject() == o)
+		{
+			head = head.getNext();
+			head.setPrev(null);
+			return true;
 		}
 		
-		CSNode<E> temp = new CSNode<E>();
+		if (tail.getObject() == o)
+		{
+			tail = tail.getPrev();
+			tail.setNext(null);
+			return true;
+		}
 		
+		run = head;
+		CSNode<E> temp = new CSNode<E>();
+		while (run != null)
+		{
+			if (run.getObject() == o)
+			{
+				temp = run.getNext();
+				temp.setPrev(run.getPrev());
+				run.getPrev().setNext(temp);
+				run = null;
+				return true;
 			
+			}
+			run = run.getNext();
+		}
 		return false;
 	}
 
 	@Override
-	public boolean remove(E o) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void clear() {
+	public void clear() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
