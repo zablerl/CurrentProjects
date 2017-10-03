@@ -8,7 +8,6 @@ public class CSNode<T>
 	{
 		this.prev = null;
 		this.next = null;
-		this.storedObj = null;
 	}
 	
 	public CSNode(CSNode<T> prev, CSNode<T> next, T storedObj)

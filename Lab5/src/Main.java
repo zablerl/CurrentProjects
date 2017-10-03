@@ -81,6 +81,7 @@ public class Main
 		}
 		System.out.println();
 		
+		/*
 		System.out.println( "Sorting list (ascending)..." );
 		list.sort( new Comparator<Integer>()
         {
@@ -152,5 +153,6 @@ public class Main
 			System.out.print( list.get( i ) + ", " );
 		}
 		System.out.println();
+		*/
 	}
 }
