@@ -17,17 +17,10 @@ public class CSList<E> implements ICSList<E>
 			return 0;
 		}
 		run = head.getNext();
-		while (run != null)
+		while (run != tail)
 		{
-			if (run.getObject() == null)
-			{
-				run = run.getNext();
-			}
-			else
-			{
-				counter++;
-				run = run.getNext();
-			}
+			counter++;
+			run = run.getNext();
 		}
 		return counter;
 		
@@ -69,44 +62,36 @@ public class CSList<E> implements ICSList<E>
 	public boolean add(E e) 
 	{
 		// TODO Auto-generated method stub
-		try
+		CSNode<E> newNode = new CSNode<E>();
+		newNode.setObject(e);
+		
+		if (head.getNext() == null)
 		{
-			CSNode<E> newNode = new CSNode<E>();
-			if (e == null)
+			head.setNext(newNode);
+			tail.setPrev(newNode);
+			newNode.setObject(e);
+			newNode.setNext(tail);
+			newNode.setPrev(head);
+			return true;
+		}
+			
+		run = head.getNext();
+		while (run != tail)
+		{
+			if (run == tail.getPrev())
 			{
-				throw new NullPointerException();
-			}
-			if (head.getNext() == null)
-			{
-				head.setNext(newNode);
-				tail.setPrev(newNode);
 				newNode.setObject(e);
+				run.setNext(newNode);
+				newNode.setPrev(run);
 				newNode.setNext(tail);
-				newNode.setPrev(head);
+				tail.setPrev(newNode);
+						
 				return true;
 			}
-			
-			run = head.getNext();
-			while (run != null)
-			{
-				if (run == tail.getPrev())
-				{
-					newNode.setObject(e);
-					run.setNext(newNode);
-					newNode.setPrev(run);
-					newNode.setNext(tail);
-					tail.setPrev(newNode);
-						
-					return true;
-				}
-				run = run.getNext();
-			}
-			
+			run = run.getNext();
 		}
-		catch(Exception except)
-		{
-			System.out.println(except);
-		}
+			
+	
 		return false;
 	}
 
@@ -114,50 +99,41 @@ public class CSList<E> implements ICSList<E>
 	public boolean remove(E o) 
 	{
 		// TODO Auto-generated method stub
-		try
+		
+		CSNode<E> newNode = new CSNode<E>();
+			
+		if (head.getNext().getObject() == o)
 		{
-			CSNode<E> newNode = new CSNode<E>();
-			if (o == null)
-			{
-				throw new NullPointerException();
-			}
+			head = head.getNext();
+			head.setPrev(null);
+			head.setObject(null);
+			return true;
+		}
+		
+		if (tail.getPrev().getObject() == o)
+		{
+			tail = tail.getPrev();
+			tail.setNext(null);
+			tail.setObject(null);
+			return true;
+		}
 			
-			if (head.getNext().getObject() == o)
+		run = head.getNext();
+		CSNode<E> temp = new CSNode<E>();
+		while (run != tail)
+		{
+			if (run.getObject() == o)
 			{
-				head = head.getNext();
-				head.setPrev(null);
-				head.setObject(null);
+				temp = run.getNext();
+				temp.setPrev(run.getPrev());
+				run.getPrev().setNext(temp);
+				run = null;
 				return true;
-			}
-			
-			if (tail.getPrev().getObject() == o)
-			{
-				tail = tail.getPrev();
-				tail.setNext(null);
-				tail.setObject(null);
-				return true;
-			}
-			
-			run = head.getNext();
-			CSNode<E> temp = new CSNode<E>();
-			while (run != null)
-			{
-				if (run.getObject() == o)
-				{
-					temp = run.getNext();
-					temp.setPrev(run.getPrev());
-					run.getPrev().setNext(temp);
-					run = null;
-					return true;
 				
-				}
-				run = run.getNext();
 			}
+			run = run.getNext();
 		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
+		
 		
 		return false;
 	}
@@ -188,7 +164,7 @@ public class CSList<E> implements ICSList<E>
 			return head.getNext().getObject();
 		}
 		run = head.getNext();
-		while (run != null)
+		while (run != tail)
 		{
 			if (counter == index)
 			{
@@ -221,7 +197,7 @@ public class CSList<E> implements ICSList<E>
 			return temp;
 		}
 		run = head.getNext();
-		while (run != null)
+		while (run != tail)
 		{
 			if (counter == index)
 			{
@@ -261,7 +237,7 @@ public class CSList<E> implements ICSList<E>
 				
 		}
 		run = head.getNext();
-		while (run != null)
+		while (run != tail)
 		{
 			if (counter == index)
 			{
@@ -301,7 +277,7 @@ public class CSList<E> implements ICSList<E>
 			return temp;
 		}
 		run = head.getNext();
-		while (run != null)
+		while (run != tail)
 		{
 			if (counter == index)
 			{
@@ -332,12 +308,14 @@ public class CSList<E> implements ICSList<E>
 	{
 		// TODO Auto-generated method stub
 		int counter = 0;
+		
 		if (head.getNext().getObject() == o)
 		{
 			return 0;
 		}
 		run = head.getNext();
-		while (run != null)
+
+		while (run != tail)
 		{
 			if (run.getObject() == o)
 			{
@@ -357,17 +335,28 @@ public class CSList<E> implements ICSList<E>
 	public void sort(Comparator<E> comparator) 
 	{
 		// TODO Auto-generated method stub
-		CSNode<E> newHead = new CSNode<E>();
-		CSNode<E> newTail = new CSNode<E>();
+		CSNode<E> temp = new CSNode<E>();
+		E val1 = null;
+		E val2 = null;
 		
-		run = head.getNext();
-		while (run != null)
+		for (int i = 1; i < size(); i++)
 		{
-			while (run != null && comparator.compare(run.getObject(), run.getNext().getObject()) != 0)
+			for (int j = i; j > 0; j--)
 			{
-				
+				val1 = get(j);
+				val2 = get(j-1);
+				if (comparator.compare(val1, val2) == -1)
+				{
+					temp.setObject(val1);
+					set(j, val2);
+					set(j-1, temp.getObject());
+				}
 			}
 		}
+		
+	
+		
+		
 		
 	}
 	
