@@ -19,8 +19,15 @@ public class CSList<E> implements ICSList<E>
 		run = head.getNext();
 		while (run != null)
 		{
-			counter++;
-			run = run.getNext();
+			if (run.getObject() == null)
+			{
+				run = run.getNext();
+			}
+			else
+			{
+				counter++;
+				run = run.getNext();
+			}
 		}
 		return counter;
 		
@@ -107,37 +114,51 @@ public class CSList<E> implements ICSList<E>
 	public boolean remove(E o) 
 	{
 		// TODO Auto-generated method stub
-		if (head.getNext().getObject() == o)
+		try
 		{
-			head = head.getNext();
-			head.setPrev(null);
-			head.setObject(null);
-			return true;
-		}
-		
-		if (tail.getPrev().getObject() == o)
-		{
-			tail = tail.getPrev();
-			tail.setNext(null);
-			tail.setObject(null);
-			return true;
-		}
-		
-		run = head.getNext();
-		CSNode<E> temp = new CSNode<E>();
-		while (run != null)
-		{
-			if (run.getObject() == o)
+			CSNode<E> newNode = new CSNode<E>();
+			if (o == null)
 			{
-				temp = run.getNext();
-				temp.setPrev(run.getPrev());
-				run.getPrev().setNext(temp);
-				run = null;
-				return true;
-			
+				throw new NullPointerException();
 			}
-			run = run.getNext();
+			
+			if (head.getNext().getObject() == o)
+			{
+				head = head.getNext();
+				head.setPrev(null);
+				head.setObject(null);
+				return true;
+			}
+			
+			if (tail.getPrev().getObject() == o)
+			{
+				tail = tail.getPrev();
+				tail.setNext(null);
+				tail.setObject(null);
+				return true;
+			}
+			
+			run = head.getNext();
+			CSNode<E> temp = new CSNode<E>();
+			while (run != null)
+			{
+				if (run.getObject() == o)
+				{
+					temp = run.getNext();
+					temp.setPrev(run.getPrev());
+					run.getPrev().setNext(temp);
+					run = null;
+					return true;
+				
+				}
+				run = run.getNext();
+			}
 		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
 		return false;
 	}
 
@@ -151,65 +172,65 @@ public class CSList<E> implements ICSList<E>
 	}
 
 	@Override
-	public E get(int index) throws IndexOutOfBoundsException
+	public E get(int index) 
 	{
 		// TODO Auto-generated method stub
-		try
+		
+		int counter = 0;
+		
+		if (index > size() || index < 0)
 		{
-			int counter = 0;
-			if (index == 0)
-			{
-				return head.getNext().getObject();
-			}
-			run = head.getNext();
-			while (run != null)
-			{
-				if (counter == index)
-				{
-					return run.getObject();
-				}
-				counter++;
-				run = run.getNext();
-			}
+			throw new IndexOutOfBoundsException();
 		}
-		catch(Exception e)
+		
+		if (index == 0)
 		{
-			System.out.println(e);
+			return head.getNext().getObject();
+		}
+		run = head.getNext();
+		while (run != null)
+		{
+			if (counter == index)
+			{
+				return run.getObject();
+			}
+			counter++;
+			run = run.getNext();
 		}
 		
 		return null;
 	}
 
 	@Override
-	public E set(int index, E element) throws IndexOutOfBoundsException
+	public E set(int index, E element) 
 	{
 		// TODO Auto-generated method stub
-		try
+		
+		int counter = 0;
+		E temp = null;
+		
+		if (index > size() || index < 0)
 		{
-			int counter = 0;
-			E temp = null;
-			if (index == 0)
+			throw new IndexOutOfBoundsException();
+		}
+		
+		if (index == 0)
+		{
+			temp = head.getNext().getObject();
+			head.getNext().setObject(element);
+			return temp;
+		}
+		run = head.getNext();
+		while (run != null)
+		{
+			if (counter == index)
 			{
-				temp = head.getNext().getObject();
-				head.getNext().setObject(element);
+				temp = run.getObject();
+				run.setObject(element);
 				return temp;
 			}
-			run = head.getNext();
-			while (run != null)
-			{
-				if (counter == index)
-				{
-					temp = run.getObject();
-					run.setObject(element);
-					return temp;
-				}
-				counter++;
-				run = run.getNext();
-			}
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
+			counter++;
+			run = run.getNext();
 		}
 		
 		return null;
@@ -217,101 +238,89 @@ public class CSList<E> implements ICSList<E>
 
 	
 	@Override
-	public void add(int index, E element) throws IndexOutOfBoundsException
+	public void add(int index, E element)
 	{
 		// TODO Auto-generated method stub
-		try
+		
+		int counter = 0;
+		CSNode<E> temp = new CSNode<E>();
+		CSNode<E> newNode = new CSNode<E>();
+		newNode.setObject(element);
+		
+		if (index > size() || index < 0)
 		{
-			int counter = 0;
-			CSNode<E> temp = new CSNode<E>();
-			CSNode<E> newNode = new CSNode<E>();
-			if (index == 0)
-			{
-				temp = head.getNext();
-				temp.setNext(head.getNext().getNext());
-				head = newNode;
-				head.setPrev(null);
-				head.setNext(temp);
-				head.setObject(null);
-				temp.setPrev(head);
+			throw new IndexOutOfBoundsException();
+		}
+		
+		if (index == 0)
+		{
+			temp = head.getNext();
+			head.setNext(newNode);
+			newNode.setPrev(head);
+			newNode.setNext(temp);
 				
-			}
-			run = head.getNext();
-			while (run != null)
-			{
-				if (counter == index)
-				{
-					newNode.setPrev(run.getPrev());
-					run.getPrev().setPrev(newNode);
-					run.setPrev(newNode);
-					newNode.setNext(run);
-					newNode.setObject(element);
-					
-				}
-				if (run.equals(tail.getPrev()))
-				{
-					temp = tail.getPrev();
-					temp.setPrev(tail.getPrev().getPrev());
-					tail = newNode;
-					tail.setPrev(temp);
-					tail.setNext(null);
-					tail.setObject(null);
-					temp.setNext(tail);
-				}
-				counter++;
-				run = run.getNext();
-			}
 		}
-		catch(Exception e)
+		run = head.getNext();
+		while (run != null)
 		{
-			System.out.println(e);
+			if (counter == index)
+			{
+				temp = run.getPrev();
+				run.getPrev().setNext(newNode);
+				newNode.setPrev(temp);
+				newNode.setNext(run);
+				run.setPrev(newNode);
+					
+			}
+			counter++;
+			run = run.getNext();
 		}
 	}
 	
 
 	@Override
-	public E remove(int index) throws IndexOutOfBoundsException
+	public E remove(int index)
 	{
 		// TODO Auto-generated method stub
-		try
+		
+		int counter = 0;
+		E temp = null;
+		CSNode<E> temp1 = new CSNode<E>();
+		
+		if (index > size() || index < 0)
 		{
-			int counter = 0;
-			E temp = null;
-			CSNode<E> temp1 = new CSNode<E>();
-			if (index == 0)
+			throw new IndexOutOfBoundsException();
+		}
+		
+		if (index == 0)
+		{
+			temp = head.getNext().getObject();
+			head = head.getNext();
+			head.setPrev(null);
+			head.setObject(null);
+			return temp;
+		}
+		run = head.getNext();
+		while (run != null)
+		{
+			if (counter == index)
 			{
-				temp = head.getNext().getObject();
-				head = head.getNext();
-				head.setPrev(null);
-				head.setObject(null);
+				temp = run.getObject();
+				temp1.setPrev(run.getPrev());
+				run = run.getNext();
+				run.setPrev(temp1.getPrev());
 				return temp;
 			}
-			run = head.getNext();
-			while (run != null)
+			if (run.equals(tail.getPrev()))
 			{
-				if (counter == index)
-				{
-					temp = run.getObject();
-					temp1.setPrev(run.getPrev());
-					run = run.getNext();
-					run.setPrev(temp1.getPrev());
-					return temp;
-				}
-				if (run.equals(tail.getPrev()))
-				{
-					temp = tail.getPrev().getObject();
-					tail = tail.getPrev();
-					tail.setNext(null);
-					tail.setObject(null);
-					return temp;
-				}
-				counter++;
-				run = run.getNext();
+				temp = tail.getPrev().getObject();
+				tail = tail.getPrev();
+				tail.setNext(null);
+				tail.setObject(null);
+				return temp;
 			}
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
+			counter++;
+			run = run.getNext();
 		}
 		
 		return null;
@@ -354,7 +363,10 @@ public class CSList<E> implements ICSList<E>
 		run = head.getNext();
 		while (run != null)
 		{
-			
+			while (run != null && comparator.compare(run.getObject(), run.getNext().getObject()) != 0)
+			{
+				
+			}
 		}
 		
 	}
