@@ -34,12 +34,11 @@ public class CSMap<K, V> implements ICSMap<K, V>
     {
         // TODO: add implementation
     	int num = getBucket(key);
-    	for (int i = 0; i < buckets.get(i).size(); i++)
+    	int index = 0;
+    	if (buckets.get(num).contains(key)) 
     	{
-    		if (buckets.get(num).get(i).getKey().equals(key))
-    		{
-    			return buckets.get(num).get(i).getValue();
-    		}
+    		index = buckets.get(num).indexOf(key);
+    		return buckets.get(num).get(index).getValue();
     	}
         return null;
     }
@@ -51,23 +50,20 @@ public class CSMap<K, V> implements ICSMap<K, V>
     	V temp = null;
     	CSEntry<K, V> entry = new CSEntry<K, V>(key,value);
     	int num = getBucket(key);
+    	int index = 0;
     	if (num < MAX_BUCKETS)
     	{
-    		for (int i = 0; i < buckets.get(i).size(); i++)
-        	{
-        		if (buckets.get(num).isEmpty())
-        		{
-        			buckets.get(num).add(entry);
-        			return null;
-        		}
-        		
-        		if (buckets.get(num).get(i).equals(entry))
-        		{
-        			temp = buckets.get(num).get(i).getValue();
-        			buckets.get(num).set(i, entry);
-        			return temp;
-        		}
-        	}
+    		if (buckets.get(num).contains(key))
+    		{
+    			index = buckets.get(num).indexOf(key);
+    			temp = buckets.get(num).get(index).getValue();
+    			buckets.get(num).get(index).setValue(value);
+    			return temp;
+    		}
+    		else
+    		{
+    			buckets.get(num).add(entry);
+    		}
     	}
     	
     	return null;
@@ -99,12 +95,9 @@ public class CSMap<K, V> implements ICSMap<K, V>
     {
         // TODO: add implementation
     	int num = getBucket(key);
-    	for (int i = 0; i < MAX_BUCKETS; i++)
+    	if (buckets.get(num).contains(key))
     	{
-    		if(buckets.get(num).contains(key))
-    		{
-    			return true;
-    		}
+    		return true;
     	}
         return false;
     }
