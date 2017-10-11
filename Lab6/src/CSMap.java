@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * A class that implements the {@link ICSMap} interface.
  * 
- * @author <your name here>
+ * @author <Lindsay>
  * Copyright (C) 2017 Canisius College of Buffalo
  */
 public class CSMap<K, V> implements ICSMap<K, V>
@@ -34,11 +34,6 @@ public class CSMap<K, V> implements ICSMap<K, V>
     {
         // TODO: add implementation
     	int num = getBucket(key);
-    	if (buckets.get(num).isEmpty())
-    	{
-    		return null;
-    	}
-    	
     	for (int i = 0; i < buckets.get(num).size(); i++)
     	{
     		if (buckets.get(num).get(i).getKey().equals(key))
@@ -55,26 +50,19 @@ public class CSMap<K, V> implements ICSMap<K, V>
         // TODO: add implementation
     	V temp = null;
     	int num = getBucket(key);
-    	CSEntry<K, V> entry = new CSEntry<K, V>(key,value);
+    	CSEntry<K, V> entry = new CSEntry<K, V>(key, value);
     	
-    	if (buckets.get(num).isEmpty())
+    	for (int i = 0; i < buckets.get(num).size(); i++)
     	{
-    		buckets.get(num).add(entry);
-    	}
-    	else
-    	{
-    		for (int i = 0; i < buckets.get(num).size(); i++)
+    		if (buckets.get(num).get(i).getKey().equals(key))
     		{
-    			if (buckets.get(num).get(i).getKey().equals(key))
-    			{
-    				temp = buckets.get(num).get(i).getValue();
-    				buckets.get(num).get(i).setValue(value);
-    				return temp;
-    			}
+    			temp = buckets.get(num).get(i).getValue();
+    			buckets.get(num).get(i).setValue(value);
+    			return temp;
     		}
-    		buckets.get(num).add(entry);
     	}
     	
+    	buckets.get(num).add(entry);
     	return null;
     }
 
@@ -86,7 +74,7 @@ public class CSMap<K, V> implements ICSMap<K, V>
     	
     	for (int i = 0; i < MAX_BUCKETS; i++)
     	{
-    		for (int k = 0; k < buckets.get(i).size(); i++)
+    		for (int k = 0; k < buckets.get(i).size(); k++)
     		{
     			keys.add(buckets.get(i).get(k).getKey());
     		}
@@ -100,10 +88,6 @@ public class CSMap<K, V> implements ICSMap<K, V>
     {
         // TODO: add implementation
     	int num = getBucket(key);
-    	if (buckets.get(num).isEmpty())
-    	{
-    		return false;
-    	}
     	for (int i = 0; i < buckets.get(num).size(); i++)
     	{
     		if (buckets.get(num).get(i).getKey().equals(key))
