@@ -1,3 +1,11 @@
+/**
+ * Author: Lindsay Zabler
+ * Class: CSC 213/L
+ * Lab 7
+ * Purpose: Compute the factors of the user-inputed integer using both 
+ * a single Thread and an ExecutorService
+ */
+
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;

@@ -1,3 +1,9 @@
+/**
+ * Author: Lindsay Zabler
+ * Purpose: Helpful interface to be used by the Thread and ExecutorService
+ * so that the both objects can compute the factors.
+ */
+
 import java.util.ArrayList;
 
 public class RunnableExample implements Runnable
